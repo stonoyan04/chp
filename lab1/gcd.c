@@ -1,3 +1,4 @@
+//greatest common divisor
 #include <stdio.h>
 #include <string.h>
 

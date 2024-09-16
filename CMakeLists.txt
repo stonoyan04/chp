@@ -3,4 +3,4 @@ project(chp C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(chp main.c)
+add_executable(lab1/lcm.cpp)
