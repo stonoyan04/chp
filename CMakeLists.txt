@@ -3,7 +3,8 @@ project(chp)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(chp main.cpp
+add_executable(chp
         lab1/gcd.cpp
         lab1/lcm.cpp
-        lab1/lcm.h)
+        lab1/lcm.h
+        main.cpp)
