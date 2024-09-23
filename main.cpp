@@ -4,6 +4,13 @@
 #include "lab1/gcd.h"
 #include "lab2/lcm.h"
 #include "lab2/missing_number.h"
+#include "lab3/cipher.h"
+
+void calculateGCD();
+void calculateLCM();
+void findMissingNumberOption();
+void encryptMessage();
+void decryptMessage();
 
 void calculateGCD() {
     int num1, num2;
@@ -74,6 +81,38 @@ void findMissingNumberOption() {
     std::cout << "The missing number is: " << missing_number << std::endl;
 }
 
+void encryptMessage() {
+    std::string key;
+    std::string message;
+
+    std::cout << "Enter the key for encryption: ";
+    std::getline(std::cin, key);
+
+    std::cout << "Enter the message to encrypt: ";
+    std::getline(std::cin, message);
+
+    SimpleSubstitutionCipher cipher(key);
+    std::string encryptedMessage = cipher.encrypt(message);
+
+    std::cout << "Encrypted Message: " << encryptedMessage << std::endl;
+}
+
+void decryptMessage() {
+    std::string key;
+    std::string encryptedMessage;
+
+    std::cout << "Enter the key for decryption: ";
+    std::getline(std::cin, key);
+
+    std::cout << "Enter the message to decrypt: ";
+    std::getline(std::cin, encryptedMessage);
+
+    SimpleSubstitutionCipher cipher(key);
+    std::string decryptedMessage = cipher.decrypt(encryptedMessage);
+
+    std::cout << "Decrypted Message: " << decryptedMessage << std::endl;
+}
+
 int main() {
     std::string choice;
     while (true) {
@@ -81,7 +120,9 @@ int main() {
         std::cout << "1. Calculate GCD\n";
         std::cout << "2. Calculate LCM\n";
         std::cout << "3. Find Missing Number\n";
-        std::cout << "4. Exit\n";
+        std::cout << "4. Encrypt Message\n";
+        std::cout << "5. Decrypt Message\n";
+        std::cout << "6. Exit\n";
         std::cout << "Enter your choice: ";
         std::getline(std::cin, choice);
 
@@ -92,9 +133,13 @@ int main() {
         } else if (choice == "3") {
             findMissingNumberOption();
         } else if (choice == "4") {
+            encryptMessage();
+        } else if (choice == "5") {
+            decryptMessage();
+        } else if (choice == "6") {
             break;
         } else {
-            std::cout << "Invalid choice. Please enter 1, 2, 3, or 4.\n";
+            std::cout << "Invalid choice. Please enter 1, 2, 3, 4, 5, or 6.\n";
         }
     }
 
