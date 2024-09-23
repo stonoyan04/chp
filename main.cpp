@@ -1,9 +1,10 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include "lab1/gcd.h"
-#include "lab1/lcm.h"
+#include "lab2/lcm.h"
+#include "lab2/missing_number.h"
 
-// Function to calculate GCD
 void calculateGCD() {
     int num1, num2;
     std::string input;
@@ -42,13 +43,45 @@ void calculateLCM() {
     std::cout << "The LCM of " << num1 << " and " << num2 << " is: " << lcm(num1, num2) << "\n";
 }
 
+void findMissingNumberOption() {
+    int n;
+    std::string input;
+
+    std::cout << "Enter the value of n to generate an array (or type 'exit' to return): ";
+    std::getline(std::cin, input);
+
+    if (input == "exit") {
+        return;
+    }
+
+    try {
+        n = std::stoi(input);
+    } catch (...) {
+        std::cout << "Please enter a valid integer for n.\n";
+        return;
+    }
+
+    std::vector<int> numbers = generateArray(n);
+
+    std::cout << "Generated array: ";
+    for (int num : numbers) {
+        std::cout << num << " ";
+    }
+    std::cout << "\n";
+
+    int missing_number = findMissingNumber(numbers, n);
+
+    std::cout << "The missing number is: " << missing_number << std::endl;
+}
+
 int main() {
     std::string choice;
     while (true) {
         std::cout << "\nChoose an option:\n";
         std::cout << "1. Calculate GCD\n";
         std::cout << "2. Calculate LCM\n";
-        std::cout << "3. Exit\n";
+        std::cout << "3. Find Missing Number\n";
+        std::cout << "4. Exit\n";
         std::cout << "Enter your choice: ";
         std::getline(std::cin, choice);
 
@@ -57,9 +90,11 @@ int main() {
         } else if (choice == "2") {
             calculateLCM();
         } else if (choice == "3") {
+            findMissingNumberOption();
+        } else if (choice == "4") {
             break;
         } else {
-            std::cout << "Invalid choice. Please enter 1, 2, or 3.\n";
+            std::cout << "Invalid choice. Please enter 1, 2, 3, or 4.\n";
         }
     }
 
