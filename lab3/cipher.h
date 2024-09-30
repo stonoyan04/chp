@@ -2,28 +2,19 @@
 #define CIPHER_H
 
 #include <string>
-#include <unordered_map>
 
 class Cipher {
 public:
-    virtual std::string encrypt(const std::string& text) = 0;
-    virtual std::string decrypt(const std::string& text) = 0;
+    virtual std::string encrypt(const std::string& text, const std::string& key) = 0;
+    virtual std::string decrypt(const std::string& text, const std::string& key) = 0;
     virtual ~Cipher() = default;
 };
 
-class SimpleSubstitutionCipher : public Cipher {
-private:
-    std::unordered_map<char, char> encryptionMap;
-    std::unordered_map<char, char> decryptionMap;
-    std::string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    void generateEncryptionMap(const std::string& key);
-    void generateDecryptionMap();
-
+class OneTimePadCipher : public Cipher {
 public:
-    SimpleSubstitutionCipher(const std::string& key);
-    std::string encrypt(const std::string& text) override;
-    std::string decrypt(const std::string& text) override;
+    OneTimePadCipher() = default;
+    std::string encrypt(const std::string& text, const std::string& key) override;
+    std::string decrypt(const std::string& text, const std::string& key) override;
 };
 
 #endif

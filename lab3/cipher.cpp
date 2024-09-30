@@ -1,56 +1,42 @@
-#include "Cipher.h"
+#include "cipher.h"
 #include <cctype>
+#include <stdexcept>
 
-SimpleSubstitutionCipher::SimpleSubstitutionCipher(const std::string& key) {
-    generateEncryptionMap(key);
-    generateDecryptionMap();
-}
-
-void SimpleSubstitutionCipher::generateEncryptionMap(const std::string& key) {
-    std::string uniqueKey;
-    for (char c : key) {
-        if (uniqueKey.find(toupper(c)) == std::string::npos) {
-            uniqueKey += toupper(c);
-        }
+std::string OneTimePadCipher::encrypt(const std::string& text, const std::string& key) {
+    if (text.length() != key.length()) {
+        throw std::invalid_argument("Error: The key must be the same length as the message for One-Time Pad cipher.");
     }
 
-    size_t keyIndex = 0;
-    for (char c : alphabet) {
-        if (keyIndex < uniqueKey.length()) {
-            encryptionMap[c] = uniqueKey[keyIndex++];
-        } else {
-            encryptionMap[c] = c;
-        }
-    }
-}
-
-void SimpleSubstitutionCipher::generateDecryptionMap() {
-    for (auto& pair : encryptionMap) {
-        decryptionMap[pair.second] = pair.first;
-    }
-}
-
-std::string SimpleSubstitutionCipher::encrypt(const std::string& text) {
     std::string result;
-    for (char c : text) {
-        char upperC = toupper(c);
-        if (encryptionMap.find(upperC) != encryptionMap.end()) {
-            result += encryptionMap[upperC];
+    for (size_t i = 0; i < text.length(); ++i) {
+        char textChar = std::toupper(text[i]);
+        char keyChar = std::toupper(key[i]);
+
+        if (std::isalpha(textChar) && std::isalpha(keyChar)) {
+            char encryptedChar = ((textChar - 'A') + (keyChar - 'A')) % 26 + 'A';
+            result += encryptedChar;
         } else {
-            result += c;
+            result += textChar;
         }
     }
     return result;
 }
 
-std::string SimpleSubstitutionCipher::decrypt(const std::string& text) {
+std::string OneTimePadCipher::decrypt(const std::string& text, const std::string& key) {
+    if (text.length() != key.length()) {
+        throw std::invalid_argument("Error: The key must be the same length as the message for One-Time Pad cipher.");
+    }
+
     std::string result;
-    for (char c : text) {
-        char upperC = toupper(c);
-        if (decryptionMap.find(upperC) != decryptionMap.end()) {
-            result += decryptionMap[upperC];
+    for (size_t i = 0; i < text.length(); ++i) {
+        char textChar = std::toupper(text[i]);
+        char keyChar = std::toupper(key[i]);
+
+        if (std::isalpha(textChar) && std::isalpha(keyChar)) {
+            char decryptedChar = ((textChar - 'A') - (keyChar - 'A') + 26) % 26 + 'A';
+            result += decryptedChar;
         } else {
-            result += c;
+            result += textChar;
         }
     }
     return result;

@@ -82,35 +82,51 @@ void findMissingNumberOption() {
 }
 
 void encryptMessage() {
-    std::string key;
     std::string message;
-
-    std::cout << "Enter the key for encryption: ";
-    std::getline(std::cin, key);
+    std::string key;
 
     std::cout << "Enter the message to encrypt: ";
     std::getline(std::cin, message);
 
-    SimpleSubstitutionCipher cipher(key);
-    std::string encryptedMessage = cipher.encrypt(message);
+    std::cout << "Enter the key for encryption (must be the same length as the message): ";
+    std::getline(std::cin, key);
 
-    std::cout << "Encrypted Message: " << encryptedMessage << std::endl;
+    if (message.length() != key.length()) {
+        std::cout << "Error: The key must be the same length as the message for One-Time Pad cipher.\n";
+        return;
+    }
+
+    OneTimePadCipher cipher;
+    try {
+        std::string encryptedMessage = cipher.encrypt(message, key);
+        std::cout << "Encrypted Message: " << encryptedMessage << std::endl;
+    } catch (const std::invalid_argument& e) {
+        std::cout << e.what() << "\n";
+    }
 }
 
 void decryptMessage() {
-    std::string key;
     std::string encryptedMessage;
-
-    std::cout << "Enter the key for decryption: ";
-    std::getline(std::cin, key);
+    std::string key;
 
     std::cout << "Enter the message to decrypt: ";
     std::getline(std::cin, encryptedMessage);
 
-    SimpleSubstitutionCipher cipher(key);
-    std::string decryptedMessage = cipher.decrypt(encryptedMessage);
+    std::cout << "Enter the key for decryption (must be the same length as the message): ";
+    std::getline(std::cin, key);
 
-    std::cout << "Decrypted Message: " << decryptedMessage << std::endl;
+    if (encryptedMessage.length() != key.length()) {
+        std::cout << "Error: The key must be the same length as the message for One-Time Pad cipher.\n";
+        return;
+    }
+
+    OneTimePadCipher cipher;
+    try {
+        std::string decryptedMessage = cipher.decrypt(encryptedMessage, key);
+        std::cout << "Decrypted Message: " << decryptedMessage << std::endl;
+    } catch (const std::invalid_argument& e) {
+        std::cout << e.what() << "\n";
+    }
 }
 
 int main() {
