@@ -1,4 +1,4 @@
-#include "cipher.h"
+#include "one-time-pad-cipher.h"
 #include <cctype>
 #include <stdexcept>
 

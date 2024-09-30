@@ -4,13 +4,16 @@
 #include "lab1/gcd.h"
 #include "lab2/lcm.h"
 #include "lab2/missing_number.h"
-#include "lab3/cipher.h"
+#include "lab3/one-time-pad-cipher.h"
+#include "lab4/caesar-cipher.h"
 
 void calculateGCD();
 void calculateLCM();
 void findMissingNumberOption();
-void encryptMessage();
-void decryptMessage();
+void encryptWithOneTimePadMessage();
+void decryptWithOneTimePadMessage();
+void encryptWithCaesarMessage();
+void decryptWithCaesarMessage();
 
 void calculateGCD() {
     int num1, num2;
@@ -81,7 +84,7 @@ void findMissingNumberOption() {
     std::cout << "The missing number is: " << missing_number << std::endl;
 }
 
-void encryptMessage() {
+void encryptWithOneTimePadMessage() {
     std::string message;
     std::string key;
 
@@ -105,7 +108,7 @@ void encryptMessage() {
     }
 }
 
-void decryptMessage() {
+void decryptWithOneTimePadMessage() {
     std::string encryptedMessage;
     std::string key;
 
@@ -129,6 +132,40 @@ void decryptMessage() {
     }
 }
 
+void encryptWithCaesarMessage() {
+    std::string message;
+    int key;
+
+    std::cout << "Enter the message to encrypt: ";
+    std::getline(std::cin, message);
+
+    std::cout << "Enter the key (shift amount) for encryption: ";
+    std::cin >> key;
+    std::cin.ignore();
+
+    CaesarCipher cipher;
+    std::string encryptedMessage = cipher.encrypt(message, key);
+
+    std::cout << "Encrypted Message: " << encryptedMessage << std::endl;
+}
+
+void decryptWithCaesarMessage() {
+    std::string encryptedMessage;
+    int key;
+
+    std::cout << "Enter the message to decrypt: ";
+    std::getline(std::cin, encryptedMessage);
+
+    std::cout << "Enter the key (shift amount) for decryption: ";
+    std::cin >> key;
+    std::cin.ignore();
+
+    CaesarCipher cipher;
+    std::string decryptedMessage = cipher.decrypt(encryptedMessage, key);
+
+    std::cout << "Decrypted Message: " << decryptedMessage << std::endl;
+}
+
 int main() {
     std::string choice;
     while (true) {
@@ -136,9 +173,11 @@ int main() {
         std::cout << "1. Calculate GCD\n";
         std::cout << "2. Calculate LCM\n";
         std::cout << "3. Find Missing Number\n";
-        std::cout << "4. Encrypt Message\n";
-        std::cout << "5. Decrypt Message\n";
-        std::cout << "6. Exit\n";
+        std::cout << "4. Encrypt with one time pad Message\n";
+        std::cout << "5. Decrypt with one time pad Message\n";
+        std::cout << "6. Encrypt with Caesar Message\n";
+        std::cout << "7. Decrypt with Caesar Message\n";
+        std::cout << "8. Exit\n";
         std::cout << "Enter your choice: ";
         std::getline(std::cin, choice);
 
@@ -149,13 +188,17 @@ int main() {
         } else if (choice == "3") {
             findMissingNumberOption();
         } else if (choice == "4") {
-            encryptMessage();
+            encryptWithOneTimePadMessage();
         } else if (choice == "5") {
-            decryptMessage();
+            decryptWithOneTimePadMessage();
         } else if (choice == "6") {
+            encryptWithCaesarMessage();
+        }  else if (choice == "7") {
+            decryptWithCaesarMessage();
+        } else if (choice == "8") {
             break;
         } else {
-            std::cout << "Invalid choice. Please enter 1, 2, 3, 4, 5, or 6.\n";
+            std::cout << "Invalid choice. Please enter 1, 2, 3, 4, 5, 6, 7 or 8.\n";
         }
     }
 
