@@ -6,6 +6,7 @@
 #include "lab2/missing_number.h"
 #include "lab3/one-time-pad-cipher.h"
 #include "lab4/caesar-cipher.h"
+#include "lab5/columnar_transposition.h"
 
 void calculateGCD();
 void calculateLCM();
@@ -14,6 +15,8 @@ void encryptWithOneTimePadMessage();
 void decryptWithOneTimePadMessage();
 void encryptWithCaesarMessage();
 void decryptWithCaesarMessage();
+void encryptWithColumnarTransposition();
+void decryptWithColumnarTransposition();
 
 void calculateGCD() {
     int num1, num2;
@@ -166,6 +169,40 @@ void decryptWithCaesarMessage() {
     std::cout << "Decrypted Message: " << decryptedMessage << std::endl;
 }
 
+void encryptWithColumnarTransposition() {
+    std::string message;
+    int columns;
+
+    std::cout << "Enter the message to encrypt: ";
+    std::getline(std::cin, message);
+
+    std::cout << "Enter the number of columns (key): ";
+    std::cin >> columns;
+    std::cin.ignore();
+
+    ColumnarTranspositionCipher cipher;
+    std::string encryptedMessage = cipher.encrypt(message, columns);
+
+    std::cout << "Encrypted Message: " << encryptedMessage << std::endl;
+}
+
+void decryptWithColumnarTransposition() {
+    std::string ciphertext;
+    int columns;
+
+    std::cout << "Enter the message to decrypt: ";
+    std::getline(std::cin, ciphertext);
+
+    std::cout << "Enter the number of columns (key): ";
+    std::cin >> columns;
+    std::cin.ignore();
+
+    ColumnarTranspositionCipher cipher;
+    std::string decryptedMessage = cipher.decrypt(ciphertext, columns);
+
+    std::cout << "Decrypted Message: " << decryptedMessage << std::endl;
+}
+
 int main() {
     std::string choice;
     while (true) {
@@ -173,11 +210,13 @@ int main() {
         std::cout << "1. Calculate GCD\n";
         std::cout << "2. Calculate LCM\n";
         std::cout << "3. Find Missing Number\n";
-        std::cout << "4. Encrypt with one time pad Message\n";
-        std::cout << "5. Decrypt with one time pad Message\n";
+        std::cout << "4. Encrypt with One-Time Pad Message\n";
+        std::cout << "5. Decrypt with One-Time Pad Message\n";
         std::cout << "6. Encrypt with Caesar Message\n";
         std::cout << "7. Decrypt with Caesar Message\n";
-        std::cout << "8. Exit\n";
+        std::cout << "8. Encrypt with Columnar Transposition\n";  // New option
+        std::cout << "9. Decrypt with Columnar Transposition\n";  // New option
+        std::cout << "10. Exit\n";
         std::cout << "Enter your choice: ";
         std::getline(std::cin, choice);
 
@@ -193,12 +232,16 @@ int main() {
             decryptWithOneTimePadMessage();
         } else if (choice == "6") {
             encryptWithCaesarMessage();
-        }  else if (choice == "7") {
+        } else if (choice == "7") {
             decryptWithCaesarMessage();
         } else if (choice == "8") {
+            encryptWithColumnarTransposition();
+        } else if (choice == "9") {
+            decryptWithColumnarTransposition();
+        } else if (choice == "10") {
             break;
         } else {
-            std::cout << "Invalid choice. Please enter 1, 2, 3, 4, 5, 6, 7 or 8.\n";
+            std::cout << "Invalid choice. Please enter 1 to 10.\n";
         }
     }
 
