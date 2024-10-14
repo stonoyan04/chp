@@ -1,41 +1,48 @@
 #include "rle.h"
+#include <stdexcept>
+#include <sstream>
 
 std::string RunLengthEncoding::encode(const std::string& input) {
-    std::string encoded;
+    if (input.empty()) return "";
+
+    std::ostringstream encoded;
     int length = input.length();
 
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < length; ++i) {
+        char currentChar = input[i];
         int count = 1;
 
-        while (i < length - 1 && input[i] == input[i + 1]) {
-            count++;
-            i++;
+        while (i + 1 < length && input[i] == input[i + 1]) {
+            ++count;
+            ++i;
         }
 
-        encoded += input[i] + std::to_string(count);
+        encoded << currentChar << count;
     }
 
-    return encoded;
+    return encoded.str();
 }
 
 std::string RunLengthEncoding::decode(const std::string& input) {
-    std::string decoded;
+    if (input.empty()) return "";
+
+    std::ostringstream decoded;
     int length = input.length();
 
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < length; ++i) {
         char character = input[i];
-        i++;
 
-        std::string countStr;
-        while (i < length && isdigit(input[i])) {
-            countStr += input[i];
-            i++;
+        if (i + 1 >= length || !isdigit(input[i + 1])) {
+            throw std::invalid_argument("Invalid encoded input: Missing or incorrect count value.");
         }
-        i--;
 
-        int count = std::stoi(countStr);
-        decoded.append(count, character);
+        int count = 0;
+        while (i + 1 < length && isdigit(input[i + 1])) {
+            count = count * 10 + (input[++i] - '0');
+        }
+
+        decoded << std::string(count, character);
     }
 
-    return decoded;
+    return decoded.str();
 }
