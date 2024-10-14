@@ -7,6 +7,7 @@
 #include "lab3/one-time-pad-cipher.h"
 #include "lab4/caesar-cipher.h"
 #include "lab5/columnar_transposition.h"
+#include "lab6/rle.h"
 
 void calculateGCD();
 void calculateLCM();
@@ -17,6 +18,8 @@ void encryptWithCaesarMessage();
 void decryptWithCaesarMessage();
 void encryptWithColumnarTransposition();
 void decryptWithColumnarTransposition();
+void runRLEEncode();
+void runRLEDecode();
 
 void calculateGCD() {
     int num1, num2;
@@ -88,51 +91,41 @@ void findMissingNumberOption() {
 }
 
 void encryptWithOneTimePadMessage() {
-    std::string message;
-    std::string key;
+    std::string message, key;
 
     std::cout << "Enter the message to encrypt: ";
     std::getline(std::cin, message);
 
-    std::cout << "Enter the key for encryption (must be the same length as the message): ";
+    std::cout << "Enter the key (must be the same length as the message): ";
     std::getline(std::cin, key);
 
     if (message.length() != key.length()) {
-        std::cout << "Error: The key must be the same length as the message for One-Time Pad cipher.\n";
+        std::cout << "Error: Key must be the same length as the message.\n";
         return;
     }
 
     OneTimePadCipher cipher;
-    try {
-        std::string encryptedMessage = cipher.encrypt(message, key);
-        std::cout << "Encrypted Message: " << encryptedMessage << std::endl;
-    } catch (const std::invalid_argument& e) {
-        std::cout << e.what() << "\n";
-    }
+    std::string encryptedMessage = cipher.encrypt(message, key);
+    std::cout << "Encrypted Message: " << encryptedMessage << std::endl;
 }
 
 void decryptWithOneTimePadMessage() {
-    std::string encryptedMessage;
-    std::string key;
+    std::string encryptedMessage, key;
 
     std::cout << "Enter the message to decrypt: ";
     std::getline(std::cin, encryptedMessage);
 
-    std::cout << "Enter the key for decryption (must be the same length as the message): ";
+    std::cout << "Enter the key: ";
     std::getline(std::cin, key);
 
     if (encryptedMessage.length() != key.length()) {
-        std::cout << "Error: The key must be the same length as the message for One-Time Pad cipher.\n";
+        std::cout << "Error: Key must be the same length as the message.\n";
         return;
     }
 
     OneTimePadCipher cipher;
-    try {
-        std::string decryptedMessage = cipher.decrypt(encryptedMessage, key);
-        std::cout << "Decrypted Message: " << decryptedMessage << std::endl;
-    } catch (const std::invalid_argument& e) {
-        std::cout << e.what() << "\n";
-    }
+    std::string decryptedMessage = cipher.decrypt(encryptedMessage, key);
+    std::cout << "Decrypted Message: " << decryptedMessage << std::endl;
 }
 
 void encryptWithCaesarMessage() {
@@ -142,13 +135,12 @@ void encryptWithCaesarMessage() {
     std::cout << "Enter the message to encrypt: ";
     std::getline(std::cin, message);
 
-    std::cout << "Enter the key (shift amount) for encryption: ";
+    std::cout << "Enter the key (shift amount): ";
     std::cin >> key;
     std::cin.ignore();
 
     CaesarCipher cipher;
     std::string encryptedMessage = cipher.encrypt(message, key);
-
     std::cout << "Encrypted Message: " << encryptedMessage << std::endl;
 }
 
@@ -159,13 +151,12 @@ void decryptWithCaesarMessage() {
     std::cout << "Enter the message to decrypt: ";
     std::getline(std::cin, encryptedMessage);
 
-    std::cout << "Enter the key (shift amount) for decryption: ";
+    std::cout << "Enter the key (shift amount): ";
     std::cin >> key;
     std::cin.ignore();
 
     CaesarCipher cipher;
     std::string decryptedMessage = cipher.decrypt(encryptedMessage, key);
-
     std::cout << "Decrypted Message: " << decryptedMessage << std::endl;
 }
 
@@ -176,13 +167,12 @@ void encryptWithColumnarTransposition() {
     std::cout << "Enter the message to encrypt: ";
     std::getline(std::cin, message);
 
-    std::cout << "Enter the number of columns (key): ";
+    std::cout << "Enter the number of columns: ";
     std::cin >> columns;
     std::cin.ignore();
 
     ColumnarTranspositionCipher cipher;
     std::string encryptedMessage = cipher.encrypt(message, columns);
-
     std::cout << "Encrypted Message: " << encryptedMessage << std::endl;
 }
 
@@ -193,14 +183,35 @@ void decryptWithColumnarTransposition() {
     std::cout << "Enter the message to decrypt: ";
     std::getline(std::cin, ciphertext);
 
-    std::cout << "Enter the number of columns (key): ";
+    std::cout << "Enter the number of columns: ";
     std::cin >> columns;
     std::cin.ignore();
 
     ColumnarTranspositionCipher cipher;
     std::string decryptedMessage = cipher.decrypt(ciphertext, columns);
-
     std::cout << "Decrypted Message: " << decryptedMessage << std::endl;
+}
+
+void runRLEEncode() {
+    std::string input;
+    RunLengthEncoding rle;
+
+    std::cout << "Enter a string to encode using RLE: ";
+    std::getline(std::cin, input);
+
+    std::string encoded = rle.encode(input);
+    std::cout << "Encoded string: " << encoded << std::endl;
+}
+
+void runRLEDecode() {
+    std::string input;
+    RunLengthEncoding rle;
+
+    std::cout << "Enter a string to decode using RLE: ";
+    std::getline(std::cin, input);
+
+    std::string decoded = rle.decode(input);
+    std::cout << "Decoded string: " << decoded << std::endl;
 }
 
 int main() {
@@ -214,36 +225,27 @@ int main() {
         std::cout << "5. Decrypt with One-Time Pad Message\n";
         std::cout << "6. Encrypt with Caesar Message\n";
         std::cout << "7. Decrypt with Caesar Message\n";
-        std::cout << "8. Encrypt with Columnar Transposition\n";  // New option
-        std::cout << "9. Decrypt with Columnar Transposition\n";  // New option
-        std::cout << "10. Exit\n";
+        std::cout << "8. Encrypt with Columnar Transposition\n";
+        std::cout << "9. Decrypt with Columnar Transposition\n";
+        std::cout << "10. Encode with Run Length Encoding\n";
+        std::cout << "11. Decode with Run Length Encoding\n";
+        std::cout << "12. Exit\n";
         std::cout << "Enter your choice: ";
         std::getline(std::cin, choice);
 
-        if (choice == "1") {
-            calculateGCD();
-        } else if (choice == "2") {
-            calculateLCM();
-        } else if (choice == "3") {
-            findMissingNumberOption();
-        } else if (choice == "4") {
-            encryptWithOneTimePadMessage();
-        } else if (choice == "5") {
-            decryptWithOneTimePadMessage();
-        } else if (choice == "6") {
-            encryptWithCaesarMessage();
-        } else if (choice == "7") {
-            decryptWithCaesarMessage();
-        } else if (choice == "8") {
-            encryptWithColumnarTransposition();
-        } else if (choice == "9") {
-            decryptWithColumnarTransposition();
-        } else if (choice == "10") {
-            break;
-        } else {
-            std::cout << "Invalid choice. Please enter 1 to 10.\n";
-        }
+        if (choice == "1") calculateGCD();
+        else if (choice == "2") calculateLCM();
+        else if (choice == "3") findMissingNumberOption();
+        else if (choice == "4") encryptWithOneTimePadMessage();
+        else if (choice == "5") decryptWithOneTimePadMessage();
+        else if (choice == "6") encryptWithCaesarMessage();
+        else if (choice == "7") decryptWithCaesarMessage();
+        else if (choice == "8") encryptWithColumnarTransposition();
+        else if (choice == "9") decryptWithColumnarTransposition();
+        else if (choice == "10") runRLEEncode();
+        else if (choice == "11") runRLEDecode();
+        else if (choice == "12") break;
+        else std::cout << "Invalid choice. Please enter 1 to 12.\n";
     }
-
     return 0;
 }
