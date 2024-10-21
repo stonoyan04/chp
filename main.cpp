@@ -56,6 +56,11 @@ void calculateLCM() {
         return;
     }
 
+    if (num1 < 0 || num2 < 0) {
+        std::cout << "Please enter positive integers.\n";
+        return;
+    }
+
     std::cout << "The LCM of " << num1 << " and " << num2 << " is: " << lcm(num1, num2) << "\n";
 }
 
