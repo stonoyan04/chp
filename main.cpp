@@ -8,6 +8,7 @@
 #include "lab4/caesar-cipher.h"
 #include "lab5/columnar_transposition.h"
 #include "lab6/rle.h"
+#include "lab7/mixed_cipher.h"
 
 void calculateGCD();
 void calculateLCM();
@@ -20,6 +21,40 @@ void encryptWithColumnarTransposition();
 void decryptWithColumnarTransposition();
 void runRLEEncode();
 void runRLEDecode();
+void runMixedEncode();
+void runMixedDecode();
+
+void runMixedEncode() {
+    std::string input;
+    int columns;
+
+    std::cout << "Enter a message to encode with Columnar Transposition and Run-Length Encoding: ";
+    std::getline(std::cin, input);
+
+    std::cout << "Enter the number of columns for Columnar Transposition: ";
+    std::cin >> columns;
+    std::cin.ignore();
+
+    MixedCipher mixedCipher;
+    std::string encodedMessage = mixedCipher.encode(input, columns);
+    std::cout << "Encoded Message: " << encodedMessage << std::endl;
+}
+
+void runMixedDecode() {
+    std::string input;
+    int columns;
+
+    std::cout << "Enter an encoded message to decode with Run-Length Decoding and Columnar Transposition: ";
+    std::getline(std::cin, input);
+
+    std::cout << "Enter the number of columns used for Columnar Transposition: ";
+    std::cin >> columns;
+    std::cin.ignore();
+
+    MixedCipher mixedCipher;
+    std::string decodedMessage = mixedCipher.decode(input, columns);
+    std::cout << "Decoded Message: " << decodedMessage << std::endl;
+}
 
 void calculateGCD() {
     int num1, num2;
@@ -234,7 +269,9 @@ int main() {
         std::cout << "9. Decrypt with Columnar Transposition\n";
         std::cout << "10. Encode with Run Length Encoding\n";
         std::cout << "11. Decode with Run Length Encoding\n";
-        std::cout << "12. Exit\n";
+        std::cout << "12. Encode with Mixed Cipher (Columnar Transposition + Run-Length Encoding)\n";
+        std::cout << "13. Decode with Mixed Cipher (Run-Length Decoding + Columnar Transposition)\n";
+        std::cout << "14. Exit\n";
         std::cout << "Enter your choice: ";
         std::getline(std::cin, choice);
 
@@ -249,7 +286,9 @@ int main() {
         else if (choice == "9") decryptWithColumnarTransposition();
         else if (choice == "10") runRLEEncode();
         else if (choice == "11") runRLEDecode();
-        else if (choice == "12") break;
+        else if (choice == "12") runMixedEncode();
+        else if (choice == "13") runMixedDecode();
+        else if (choice == "14") break;
         else std::cout << "Invalid choice. Please enter 1 to 12.\n";
     }
     return 0;
