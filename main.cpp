@@ -9,6 +9,8 @@
 #include "lab5/columnar_transposition.h"
 #include "lab6/rle.h"
 #include "lab7/mixed_cipher.h"
+#include "lab8/lz77.h"
+
 
 void calculateGCD();
 void calculateLCM();
@@ -23,6 +25,26 @@ void runRLEEncode();
 void runRLEDecode();
 void runMixedEncode();
 void runMixedDecode();
+
+void runLZ77Encode() {
+    std::string input;
+    std::cout << "Enter a string to encode using LZ77: ";
+    std::getline(std::cin, input);
+
+    LZ77 lz77;
+    std::string encoded = lz77.encode(input);
+    std::cout << "Encoded string: " << encoded << std::endl;
+}
+
+void runLZ77Decode() {
+    std::string input;
+    std::cout << "Enter a string to decode using LZ77 (format: offset,length,next_char): ";
+    std::getline(std::cin, input);
+
+    LZ77 lz77;
+    std::string decoded = lz77.decode(input);
+    std::cout << "Decoded string: " << decoded << std::endl;
+}
 
 void runMixedEncode() {
     std::string input;
@@ -271,7 +293,9 @@ int main() {
         std::cout << "11. Decode with Run Length Encoding\n";
         std::cout << "12. Encode with Mixed Cipher (Columnar Transposition + Run-Length Encoding)\n";
         std::cout << "13. Decode with Mixed Cipher (Run-Length Decoding + Columnar Transposition)\n";
-        std::cout << "14. Exit\n";
+        std::cout << "14. Encode with LZ77\n";
+        std::cout << "15. Decode with LZ77\n";
+        std::cout << "16. Exit\n";
         std::cout << "Enter your choice: ";
         std::getline(std::cin, choice);
 
@@ -288,8 +312,10 @@ int main() {
         else if (choice == "11") runRLEDecode();
         else if (choice == "12") runMixedEncode();
         else if (choice == "13") runMixedDecode();
-        else if (choice == "14") break;
-        else std::cout << "Invalid choice. Please enter 1 to 12.\n";
+        else if (choice == "14") runLZ77Encode();
+        else if (choice == "15") runLZ77Decode();
+        else if (choice == "16") break;
+        else std::cout << "Invalid choice. Please enter 1 to 16.\n";
     }
     return 0;
 }
