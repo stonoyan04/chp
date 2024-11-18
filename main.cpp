@@ -10,6 +10,7 @@
 #include "lab6/rle.h"
 #include "lab7/mixed_cipher.h"
 #include "lab8/lz77.h"
+#include "lab9/HuffmanCoding.h"
 
 
 void calculateGCD();
@@ -25,6 +26,49 @@ void runRLEEncode();
 void runRLEDecode();
 void runMixedEncode();
 void runMixedDecode();
+
+
+void runHuffmanEncode() {
+    std::string input;
+    std::cout << "Enter a string to encode using Huffman Coding: ";
+    std::getline(std::cin, input);
+
+    HuffmanCoding huffman;
+    std::string encoded = huffman.encode(input);
+    std::cout << "Encoded string: " << encoded << std::endl;
+    std::cout << "Huffman Tree: " << std::endl << huffman.getHuffmanTree() << std::endl;
+}
+
+std::string trim(const std::string& str) {
+    size_t start = str.find_first_not_of(" \t\n\r");
+    if (start == std::string::npos) return "";
+    size_t end = str.find_last_not_of(" \t\n\r");
+    return str.substr(start, end - start + 1);
+}
+
+void runHuffmanDecode() {
+    std::string encodedInput;
+    std::cout << "Enter the encoded string to decode using Huffman Coding: ";
+    std::getline(std::cin, encodedInput);
+
+    std::string huffmanTree, line;
+    std::cout << "Enter the Huffman Tree (format: character code per line, end input with 'END' or an empty line):\n";
+    while (true) {
+        std::getline(std::cin, line);
+        line = trim(line);
+        if (line.empty() || line == "END") break;
+        huffmanTree += line + "\n";
+    }
+
+    HuffmanCoding huffman;
+    std::string decodedText = huffman.decode(encodedInput, huffmanTree);
+
+    if (!decodedText.empty()) {
+        std::cout << "Decoded string: " << decodedText << "\n";
+    } else {
+        std::cerr << "Failed to decode the string. Please check your Huffman Tree input.\n";
+    }
+}
 
 void runLZ77Encode() {
     std::string input;
@@ -295,7 +339,9 @@ int main() {
         std::cout << "13. Decode with Mixed Cipher (Run-Length Decoding + Columnar Transposition)\n";
         std::cout << "14. Encode with LZ77\n";
         std::cout << "15. Decode with LZ77\n";
-        std::cout << "16. Exit\n";
+        std::cout << "16. Encode with Huffman Coding\n";
+        std::cout << "17. Decode with Huffman Coding\n";
+        std::cout << "18. Exit\n";
         std::cout << "Enter your choice: ";
         std::getline(std::cin, choice);
 
@@ -314,8 +360,10 @@ int main() {
         else if (choice == "13") runMixedDecode();
         else if (choice == "14") runLZ77Encode();
         else if (choice == "15") runLZ77Decode();
-        else if (choice == "16") break;
-        else std::cout << "Invalid choice. Please enter 1 to 16.\n";
+        else if (choice == "16") runHuffmanEncode();
+        else if (choice == "17") runHuffmanDecode();
+        else if (choice == "18") break;
+        else std::cout << "Invalid choice. Please enter a valid number.\n";
     }
     return 0;
 }
