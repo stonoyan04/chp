@@ -11,8 +11,9 @@
 #include "lab7/mixed_cipher.h"
 #include "lab8/lz77.h"
 #include "lab9/HuffmanCoding.h"
+#include "lab10/ip.h"
 
-
+void displayIPAddress();
 void calculateGCD();
 void calculateLCM();
 void findMissingNumberOption();
@@ -27,6 +28,18 @@ void runRLEDecode();
 void runMixedEncode();
 void runMixedDecode();
 
+
+void displayIPAddress() {
+    std::vector<std::string> ipAddresses = getIPAddress();
+    if (ipAddresses.size() == 1 && ipAddresses[0].find("Failed") != std::string::npos) {
+        std::cout << ipAddresses[0] << std::endl;
+    } else {
+        std::cout << "Resolved IP Addresses:\n";
+        for (const std::string& ip : ipAddresses) {
+            std::cout << "- " << ip << std::endl;
+        }
+    }
+}
 
 void runHuffmanEncode() {
     std::string input;
@@ -341,7 +354,8 @@ int main() {
         std::cout << "15. Decode with LZ77\n";
         std::cout << "16. Encode with Huffman Coding\n";
         std::cout << "17. Decode with Huffman Coding\n";
-        std::cout << "18. Exit\n";
+        std::cout << "18. Display Ip Address\n";
+        std::cout << "19. Exit\n";
         std::cout << "Enter your choice: ";
         std::getline(std::cin, choice);
 
@@ -362,7 +376,8 @@ int main() {
         else if (choice == "15") runLZ77Decode();
         else if (choice == "16") runHuffmanEncode();
         else if (choice == "17") runHuffmanDecode();
-        else if (choice == "18") break;
+        else if (choice == "18") displayIPAddress();
+        else if (choice == "19") break;
         else std::cout << "Invalid choice. Please enter a valid number.\n";
     }
     return 0;
