@@ -19,12 +19,14 @@ display_menu() {
 
 caesar_encrypt() {
     read -p "Enter text to encrypt: " plaintext
-    echo "$plaintext" | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+    read -p "Enter shift amount: " shift
+    ../cmake-build-debug/chp encrypt "$plaintext" "$shift"
 }
 
 caesar_decrypt() {
     read -p "Enter text to decrypt: " ciphertext
-    echo "$ciphertext" | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+    read -p "Enter shift amount: " shift
+    ../cmake-build-debug/chp decrypt "$ciphertext" "$shift"
 }
 
 while true; do
